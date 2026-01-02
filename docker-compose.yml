@@ -22,6 +22,8 @@ services:
     volumes:
       - ./piwigo-data/piwigo:/var/www/html/piwigo/
       - ./piwigo-data/scripts:/usr/local/bin/scripts/
+      - ${albumfiles}:/var/www/html/piwigo/galleries/Family
+
   piwigo-db:
     image: docker.io/library/mariadb:lts
     restart: always
@@ -36,3 +38,16 @@ services:
       - piwigo-network
     volumes:
       - ./piwigo-data/mysql:/var/lib/mysql
+
+  # The Cloudflare Tunnel service
+  cloudflared-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: unless-stopped
+    environment:
+      # Use an environment file (.env) for the token
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    command: tunnel run
+    # Ensure both services are in the same network for communication
+    networks:
+      - piwigo-network
