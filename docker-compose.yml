@@ -16,8 +16,8 @@ services:
     networks:
       - piwigo-network
     ports:
-      #- "80"
-      - "${piwigo_port}:80"
+      - "80"
+      #- "${piwigo_port}:80"
     depends_on:
       - piwigo-db
     volumes:
@@ -38,14 +38,14 @@ services:
       - TZ=${timezone}
     networks:
       - piwigo-network
-    # ports:
-    #   - "3306:3306"
+      #ports:
+      #- "3306:3306"
     volumes:
       - ./piwigo-data/mysql:/var/lib/mysql
 
   nginx:
     image: nginx:latest
-    container_name: nginx
+    container_name: piwigo-proxy
     environment:
       - TEST=ok
     volumes:

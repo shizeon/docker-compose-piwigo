@@ -4,10 +4,6 @@ dictionaryDefinitions: []
 dictionaries: []
 words:
   - albumfiles
-  - bridgetek
-  - fullchain
-  - letsencrypt
 ignoreWords:
   - piwigo
-  - privkey
 import: []

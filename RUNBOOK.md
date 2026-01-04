@@ -45,11 +45,10 @@ Database
 ```shell
 cd backups
 
-
 USERNAME=piwigodb_user
-HOST=192.168.128.253
+HOST=127.0.0.1
 DATABASE=piwigodb
-
+export MYSQL_PWD=d9hGO86fPJME1l
 mysql -h $HOST -u $USERNAME -e "DROP DATABASE $DATABASE;"
 mysql -h $HOST -u $USERNAME -e "CREATE DATABASE $DATABASE;"
 mysql -h $HOST -u $USERNAME $DATABASE< btek_family.sql
@@ -66,6 +65,7 @@ sudo cp -r themes/* ../piwigo-data/piwigo/themes/
 sudo cp -r plugins/* ../piwigo-data/piwigo/plugins/
 sudo chown -R 100099:100100 ../piwigo-data/piwigo/themes/
 sudo chown -R 100099:100100 ../piwigo-data/piwigo/plugins/
+
 ```
 
 ### Secure, remove local stuff
@@ -75,16 +75,8 @@ sudo chown -R 100099:100100 ../piwigo-data/piwigo/plugins/
 
 ### Setup SSL
 
-RUn the init ssl. It's finicky, but only needs to be done once. Do while containers are all down.
-
-```shell
-./init-ssl.sh
-```
-
 ### Backups
 
 ```shell
-sudo tar -cvzf backups/piwigo-data-$(date +%Y%m%d%H%M%S).tar.gz piwigo-data
-sudo tar -cvzf backups/certbot-data-$(date +%Y%m%d%H%M%S).tar.gz certbot-data
-
+tar -cvzf backups/piwigo-data-$(date +%Y%m%d%H%M%S).tar.gz piwigo-data
 ```
