@@ -1,5 +1,6 @@
 #!/bin/bash
-DOMAIN="home.bridgetek.com"
+
+DOMAIN="album.bridgetek.com"
 RSA_KEY_SIZE=4096
 DATA_PATH="./piwigo-data/certbot"
 EMAIL="sean@bridgetek.com" # Adding a valid email is recommended by Let's Encrypt
@@ -11,20 +12,20 @@ else
   echo "### Creating dummy certificate for $DOMAIN ..."
   echo "Make dir $DATA_PATH/conf/live/$DOMAIN"
 
-  docker compose run --rm --entrypoint "\
+  podman compose run --rm --entrypoint "\
     mkdir -p '/etc/letsencrypt/live/home.bridgetek.com'" certbot
 
-  docker compose run --rm --entrypoint "\
+  podman compose run --rm --entrypoint "\
     openssl req -x509 -nodes -newkey rsa:$RSA_KEY_SIZE -days 1 \
     -keyout '/etc/letsencrypt/live/$DOMAIN/privkey.pem' \
     -out '/etc/letsencrypt/live/$DOMAIN/fullchain.pem' \
     -subj '/CN=localhost'" certbot
   echo "### Starting nginx ..."
-  docker compose up --force-recreate -d nginx
+  podman compose up --force-recreate -d nginx
 fi
 
 echo "### Deleting dummy certificate for $DOMAIN ..."
-docker compose run --rm --entrypoint "\
+podman compose run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/live/$DOMAIN && \
   rm -Rf /etc/letsencrypt/archive/$DOMAIN && \
   rm -Rf /etc/letsencrypt/renewal/$DOMAIN.conf" certbot
@@ -48,7 +49,7 @@ if [ $STAGING != "0" ]; then
   STAGING_ARG="--staging"
 fi
 
-docker compose run --rm --entrypoint "\
+podman compose run --rm --entrypoint "\
   certbot certonly --dns-route53 \
   $EMAIL_ARG \
   $DOMAIN_ARGS \
@@ -58,4 +59,4 @@ docker compose run --rm --entrypoint "\
   --force-renewal " certbot
 
 echo "### Reloading nginx ..."
-docker compose exec nginx nginx -s reload
+podman compose exec nginx nginx -s reload
