@@ -1,0 +1,1 @@
+55 * * * * /srv/other/docker/piwigo-family/bin/sync-album.sh >/home/shizeon/log/piwigo-sync-script.log 2>&1
