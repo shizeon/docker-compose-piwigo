@@ -11,8 +11,11 @@ services:
   piwigo-main:
     image: piwigo/piwigo:latest
     restart: always
+    #user: "1000:121"
     environment:
       - TZ=${timezone}
+      # - PUID=1000
+      # - PGID=121
     networks:
       - piwigo-network
     ports:
@@ -29,6 +32,7 @@ services:
     #image: mysql:lts
     image: mysql:8.0.41
     restart: always
+    user: "${UID}:${GID}"
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_USER=piwigodb_user
@@ -46,6 +50,8 @@ services:
   nginx:
     image: nginx:latest
     container_name: piwigo-proxy
+   # user: "${UID}:${GID}"
+
     environment:
       - TEST=ok
     volumes:
@@ -60,6 +66,7 @@ services:
 
   certbot:
       image: certbot/dns-route53
+      #user: "${UID}:${GID}"
       environment:
         - AWS_ACCESS_KEY_ID=${certbot_AWS_ACCESS_KEY_ID}
         - AWS_SECRET_ACCESS_KEY=${certbot_AWS_SECRET_ACCESS_KEY}

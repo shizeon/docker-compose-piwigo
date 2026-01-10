@@ -1,0 +1,2 @@
+ALBUM_SOURCE="/srv/btsync/photoalbum/Family"
+ALBUM_DESTINATION="/srv/other/docker/piwigo-family/Family"

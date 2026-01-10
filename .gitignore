@@ -3,3 +3,4 @@ piwigo-data/
 Family/
 backups/
 certbot-data
+bin/sync-album.config
